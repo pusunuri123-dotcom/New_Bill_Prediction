@@ -1,218 +1,318 @@
-# hclhackothon
-# BillWise AI
-## Next Bill Amount Prediction and Cost Intelligence System
+# Next Bill Amount Prediction
 
-An AI-powered application that predicts the next customer bill,
-analyzes billing trends, explains potential bill increases,
-and identifies unusually high predicted bills.
-## 1. Problem Statement
-Organizations that bill customers based on consumption, subscriptions or recurring services need an early view of the next expected bill. Unexpected increases can lead to bill shock, support contacts and delayed investigation of abnormal usage. 
-Build a data-science solution that explores historical usage and billing patterns, identifies the main cost drivers, predicts each customer’s next bill amount, explains the principal factors influencing the prediction, evaluates accuracy on a chronological held-out test set and flags customers whose predicted bill is unusually high relative to an appropriate historical baseline.
-Telecom customers, especially students, working professionals, and families, face difficulties predicting their monthly mobile bills.
-Bills may fluctuate due to changes in data usage, plan changes, additional services, and other charges.
-Unexpected bill increases can disrupt monthly budgets and create financial stress.
-Customers may also struggle to identify the main reasons behind higher bills.
-Without advance predictions, it becomes difficult to plan expenses and control unnecessary costs.
-BillWise AI addresses this problem by predicting upcoming bills and providing insights into potential cost increases.
+## 1. Project Overview
 
-## 2. Business Objective
+Next Bill Amount Prediction is a machine learning project that predicts the
+next billing amount of telecom customers using their historical billing
+records, subscription details, and usage patterns.
 
-- Primary business goal: To develop an AI-powered system that predicts customers' next monthly telecom bills and helps them understand potential cost increases.
-- Expected benefits:
-   Helps customers plan their monthly budgets.
-   Identifies factors contributing to higher bills.
-   Flags potentially unusually high bills.
-   Supports better spending and usage decisions.
-- Key performance indicators (KPIs).
-  Prediction Accuracy: Mean Absolute Error (MAE) to measure the average prediction error.
-  Error Reduction: Compare model performance against predicting the previous month's bill.
-  High-Bill Detection: Measure how effectively the system identifies potentially high bills.
-  User Experience: Evaluate dashboard clarity and usefulness through user feedback.
+The project aims to help telecom companies anticipate customer bills,
+identify unusually high predicted bills, understand billing trends, and
+reduce unexpected billing surprises.
 
-## 3. Proposed Solution
+## 2. Problem Statement
 
-Describe your proposed solution and how it addresses the problem.
+Telecom customers may experience sudden increases in their monthly bills
+because of changes in usage, roaming charges, additional services, taxes,
+and other billing factors.
 
-Include the main features and expected outcomes.
+Predicting the next bill can help companies identify potential bill shocks
+early and provide better customer support.
 
-## 4. User Stories
+This project develops and evaluates regression models to predict the
+next bill amount using historical customer and billing information.
 
-- As a user, I want to access the application easily.
-- As a user, I want to view relevant information.
-- As a user, I want to receive useful insights to support my decisions.
+## 3. Objectives
 
-## 5. Technology Stack
+- Predict the next bill amount for telecom customers.
+- Analyze historical billing and usage patterns.
+- Identify the variables associated with changes in billing amounts.
+- Compare machine learning models with simple baseline predictions.
+- Evaluate model performance using chronological validation.
+- Analyze prediction errors across different customer segments.
+- Identify customers whose predicted bills are unusually high.
+- Estimate prediction uncertainty and explain important prediction drivers.
 
-| Component | Technology |
+## 4. Dataset Description
+
+**Dataset file:** `next_bill_dataset(1).csv`
+
+The dataset contains:
+
+- **Total records:** 2,000
+- **Total columns:** 35
+- **Target variable:** `next_bill_amount`
+
+Each row represents a customer billing record.
+
+### Feature Categories
+
+| Category | Example Features |
 |---|---|
-| Programming Language | Python |
-| Data Analysis | Pandas, NumPy |
-| Visualization | Matplotlib, Seaborn |
-| Machine Learning | Scikit-learn |
-| Frontend | Streamlit |
-| Version Control | Git and GitHub |
+| Customer identification | `customer_id` |
+| Billing period | `billing_month`, `billing_year` |
+| Customer profile | `customer_tenure_months`, `customer_segment`, `region` |
+| Subscription plan | `plan_type`, `plan_price`, `plan_changed` |
+| Usage information | `data_usage_gb`, `voice_usage_minutes`, `sms_count` |
+| Additional usage | `roaming_usage_gb`, `overage_data_gb`, `overage_call_minutes` |
+| Billing charges | `base_charge`, `data_overage_charge`, `call_overage_charge`, `roaming_charge` |
+| Discounts and taxes | `discount_amount`, `tax_amount`, `late_payment_fee` |
+| Historical bills | `previous_bill_amount`, `bill_2_months_ago`, `bill_3_months_ago` |
+| Historical averages | `average_bill_last_3_months`, `average_bill_last_6_months` |
+| Billing trends | `bill_change_percentage`, `maximum_bill_last_6_months` |
+| Prediction target | `next_bill_amount` |
 
-<!-- Update the technologies according to your actual project. -->
+The dataset is synthetic and is intended for developing and evaluating
+the billing prediction workflow.
 
-## 6. Data Sources and Assumptions
+## 5. Technologies Used
 
-### Data Sources
-- Dataset name:next_ball_dataset
-- Dataset source: Kaggle and Generated daa
-- Data collection method:Data was generated using Python by simulating telecom customer billing records, usage patterns, plan details, taxes, and additional charges based on India tariff-informed assumptions.
+- Python
+- Jupyter Notebook
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Scikit-learn
+- XGBoost
+- SHAP
 
-### Assumptions
-- List the assumptions made during the analysis.
-- Mention any limitations in the available data.
+## 6. Project Workflow
 
-## 7. Data Dictionary
+### Step 1: Data Loading
 
-| Column Name | Description | Data Type |
-|---|---|---|
-| Example_Column | Description of the column | Integer |
-| Example_Category | Category of the record | String |
-| Example_Value | Numerical value | Float |
+Load the dataset into a Pandas DataFrame and inspect its structure.
 
-<!-- Replace the example columns with actual dataset columns. -->
+### Step 2: Data Preprocessing
 
-## 8. Data Preprocessing
+- Inspect data types and summary statistics.
+- Check for missing values and duplicate records.
+- Prepare numerical and categorical features.
+- Encode categorical variables.
+- Identify and handle redundant features where appropriate.
 
-Describe the preprocessing steps performed.
+### Step 3: Exploratory Data Analysis
 
-- Handling missing values
-- Removing duplicate records
-- Handling outliers
-- Correcting data types
-- Encoding categorical variables
-- Scaling numerical features, if required
+Explore the dataset to understand:
 
-## 9. Exploratory Data Analysis (EDA)
+- Distribution of billing amounts.
+- Customer segments and subscription plans.
+- Relationships between usage and billing charges.
+- Historical billing trends.
+- Seasonal patterns.
+- Outliers and unusually high bills.
 
-### 9.1 Univariate Analysis
+### Step 4: Chronological Train-Test Split
 
-Analyze individual variables using descriptive statistics and visualizations.
+Split the dataset according to billing time rather than randomly.
 
-### 9.2 Bivariate Analysis
+The notebook uses earlier billing periods for training and later billing
+periods for testing. This approach is intended to evaluate how well the
+models generalize to future billing periods.
 
-Study relationships between two variables using suitable charts and statistical methods.
+### Step 5: Feature Engineering
 
-### 9.3 Multivariate Analysis
+Create additional features representing billing patterns, including:
 
-Analyze relationships among multiple variables to identify patterns and dependencies.
+- Bill volatility.
+- Bill relative to base charges.
+- Recurring and variable charges.
+- Usage trends.
+- Stability in historical billing.
+- Cyclical encoding of the billing month.
 
-## 10. Feature Engineering
+Features should only use information available at the prediction time.
 
-Describe the new features created and the transformations applied to existing features.
+### Step 6: Baseline Evaluation
 
-Explain how these features improve the analysis or model.
+Compare machine learning models with simple prediction strategies:
 
-## 11. Model Selection
+- Training-set mean.
+- Median bill for the same subscription plan.
+- Previous bill amount.
+- Average bill over the previous three months.
+- Average bill over the previous six months.
 
-List the models considered and explain why the final model was selected.
+### Step 7: Model Training
 
-- Model 1:
-- Model 2:
-- Selected Model:
+The notebook evaluates the following regression models:
 
-## 12. Model Training
+1. Linear Regression
+2. Ridge Regression
+3. Lasso Regression
+4. Decision Tree Regressor
+5. Random Forest Regressor
+6. Gradient Boosting Regressor
+7. Gradient Boosting with Huber loss
+8. XGBoost Regressor
+9. XGBoost with an absolute-error objective
+10. Support Vector Regression (SVR)
 
-Describe the training process, including:
+### Step 8: Hyperparameter Optimization
 
-- Training and testing split
-- Model parameters
-- Hyperparameter tuning
-- Cross-validation, if applicable
+Tune promising models using GridSearchCV or RandomizedSearchCV.
 
-## 13. Model Evaluation
+The notebook uses time-based validation folds and cross-validated
+Mean Absolute Error (MAE) to compare candidate configurations.
 
-Report the evaluation metrics relevant to your project.
+The held-out test period is reserved for final evaluation.
 
-| Metric | Result |
-|---|---|
-| Accuracy | TBD |
-| Precision | TBD |
-| Recall | TBD |
-| F1-Score | TBD |
+### Step 9: Model Evaluation
 
-Use only the metrics appropriate for your model. For regression,
-consider MAE, RMSE, and R² instead.
+Evaluate the selected model using the following metrics:
 
-## 14. System Architecture
+- Mean Absolute Error (MAE)
+- Mean Squared Error (MSE)
+- Root Mean Squared Error (RMSE)
+- R-squared (R²)
+- Adjusted R-squared
+- Weighted Absolute Percentage Error (WAPE)
 
-Describe how the different components of your system interact.
+The final model is selected using cross-validated MAE, then evaluated
+on the held-out test period.
 
-Example workflow:
+### Step 10: Model Interpretation
 
-Data Source → Data Preprocessing → Feature Engineering
-→ Model Training → Prediction → Application Dashboard
+Analyze feature importance and prediction drivers to understand which
+variables influence the predicted billing amount.
 
-## 15. Application Screenshots
+The notebook also explores SHAP-based explanations.
 
-Add screenshots of your application below.
+### Step 11: High-Bill Monitoring
 
-### Dashboard
-<!-- Add dashboard screenshot here -->
+Identify customers whose predicted bills are unusually high compared
+with their historical billing levels.
 
-### Results
-<!-- Add results screenshot here -->
+The notebook uses a threshold of 1.5 times the average bill over the
+previous six months for its high-bill monitoring analysis.
 
-### Prediction Output
-<!-- Add prediction screenshot here -->
+Prediction uncertainty and customer prioritization are also explored.
 
-## 16. How to Run
+## 7. Project Structure
 
-### Prerequisites
+Keep the following files in the same directory:
 
-- Python 3.x
-- Git
+Next_Bill_Amount_Prediction/
+│
+├── Next_Bill_Amount_Prediction (1).ipynb
+├── next_bill_dataset(1).csv
+└── README.md
 
-### Installation
+## 8. Installation
 
-Clone the repository:
+Install Python 3 and the required libraries.
 
-```bash
-git clone <your-repository-url>
-```
+Run the following command in your terminal:
 
-Navigate to the project directory:
+    pip install pandas numpy matplotlib seaborn scikit-learn xgboost shap jupyter
 
-```bash
-cd <your-project-folder>
-```
+## 9. How to Run the Project
 
-Install dependencies:
+### Step 1: Download the Files
 
-```bash
-pip install -r requirements.txt
-```
+Download the notebook and CSV dataset.
 
-Run the application:
+### Step 2: Place the Files Together
 
-```bash
-streamlit run app.py
-```
+Keep the notebook and CSV file in the same directory.
 
-<!-- Modify these commands according to your actual project. -->
+### Step 3: Open Jupyter Notebook
 
-## 17. Results and Business Impact
+Run:
 
-Summarize the key findings and project outcomes.
+    jupyter notebook
 
-- Key result:
-- Business benefit:
-- Improvement achieved:
+### Step 4: Open the Notebook
 
-Use actual results rather than estimated or unverified claims.
+Open:
 
-## 18. Limitations
+    Next_Bill_Amount_Prediction (1).ipynb
 
-- Describe dataset limitations.
-- Mention model or system constraints.
-- Explain any assumptions that may affect the results.
+### Step 5: Execute the Notebook
 
-## 19. Future Scope
+Run the notebook cells in order, starting from the beginning.
 
-- Improve model performance.
-- Add more data sources.
-- Develop additional application features.
-- Deploy the application for real-world use.
+If the notebook requests a dataset upload, select the supplied CSV file.
+
+Ensure that the dataset filename used in the code matches the actual
+filename of the CSV file.
+
+## 10. Results
+
+The notebook compares baseline methods and regression models using
+cross-validation and a chronological hold-out test set.
+
+The final results should be reported using the metrics generated by
+the executed notebook.
+
+Recommended results to include:
+
+- Selected model.
+- Best cross-validated MAE.
+- Test MAE.
+- Test RMSE.
+- Test R².
+- Test WAPE.
+- Performance compared with the best baseline.
+- Most important prediction features.
+- Number or percentage of customers flagged for high predicted bills.
+
+**Note:** Insert the actual numerical results after executing the notebook.
+No model accuracy or performance values are assumed in this README.
+
+## 11. Applications
+
+Potential applications include:
+
+- Telecom billing forecasts.
+- Customer bill-shock prevention.
+- Identification of unusual billing patterns.
+- Proactive customer notifications.
+- Billing trend analysis.
+- Customer support prioritization.
+- Revenue forecasting and planning.
+
+These are potential applications; their real-world effectiveness would
+need to be validated using appropriate operational data.
+
+## 12. Limitations
+
+- The supplied dataset is synthetic and may not represent real telecom
+  billing behaviour.
+- Model performance on synthetic data may not generalize to real customers.
+- Prediction quality depends on the reliability of historical features.
+- Unusual billing events may produce larger prediction errors.
+- Real-world deployment would require validation on actual billing records.
+- Customer privacy and data protection must be considered when using
+  real customer information.
+
+## 13. Future Improvements
+
+- Validate the models on real telecom billing data.
+- Develop a dashboard for interactive bill predictions.
+- Build an API for integrating predictions into billing systems.
+- Generate alerts for customers likely to experience bill shocks.
+- Monitor prediction errors over time.
+- Retrain the model as new billing records become available.
+- Improve prediction uncertainty estimates and model explanations.
+
+## 14. Conclusion
+
+This project presents a machine learning workflow for predicting the next
+telecom bill amount using historical billing, subscription, and usage data.
+
+It combines exploratory data analysis, feature engineering, baseline
+comparison, regression modelling, hyperparameter optimization, and
+chronological evaluation.
+
+The project also explores model interpretability and high-bill monitoring,
+providing a foundation for developing predictive billing solutions that
+can help telecom companies anticipate customer billing changes.
+
+## 15. Author
+
+Project: Next Bill Amount Prediction
+
+Domain: Machine Learning | Regression | Telecom Analytics
+
+Language: Python

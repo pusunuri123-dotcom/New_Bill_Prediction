@@ -6,12 +6,8 @@ An AI-powered application that predicts the next customer bill,
 analyzes billing trends, explains potential bill increases,
 and identifies unusually high predicted bills.
 ## 1. Problem Statement
-
-Describe the problem you are trying to solve.
 -Organizations that bill customers based on consumption, subscriptions or recurring services need an early view of the next expected bill. Unexpected increases can lead to bill shock, support contacts and delayed investigation of abnormal usage. 
-Build a data-science solution that explores historical usage and billing patterns, identifies the main cost drivers, predicts each customer’s next bill amount, explains the principal factors influencing the prediction, evaluates accuracy on a chronological held-out test set and flags customers whose predicted bill is unusually high relative to an appropriate historical baseline
-
-Explain who faces this problem and why it matters.
+Build a data-science solution that explores historical usage and billing patterns, identifies the main cost drivers, predicts each customer’s next bill amount, explains the principal factors influencing the prediction, evaluates accuracy on a chronological held-out test set and flags customers whose predicted bill is unusually high relative to an appropriate historical baseline.
 -Telecom customers, especially students, working professionals, and families, face difficulties predicting their monthly mobile bills.
 Bills may fluctuate due to changes in data usage, plan changes, additional services, and other charges.
 Unexpected bill increases can disrupt monthly budgets and create financial stress.
@@ -21,14 +17,13 @@ BillWise AI addresses this problem by predicting upcoming bills and providing in
 
 ## 2. Business Objective
 
-- Identify the primary business goal.
-    To develop an AI-powered system that predicts customers' next monthly telecom bills and helps them understand potential cost increases.
-- Explain the expected benefits.
+- Primary business goal: To develop an AI-powered system that predicts customers' next monthly telecom bills and helps them understand potential cost increases.
+- Expected benefits:
    Helps customers plan their monthly budgets.
    Identifies factors contributing to higher bills.
    Flags potentially unusually high bills.
    Supports better spending and usage decisions.
-- Define the key performance indicators (KPIs).
+- Key performance indicators (KPIs).
   Prediction Accuracy: Mean Absolute Error (MAE) to measure the average prediction error.
   Error Reduction: Compare model performance against predicting the previous month's bill.
   High-Bill Detection: Measure how effectively the system identifies potentially high bills.
